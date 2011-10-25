@@ -31,6 +31,14 @@ Create your project
     touch lib/index.js
     npm init
 
+NOTE: Your code will be wrapped in a strict-mode closure - so don't use "The Bad Parts" TM such as using `this` to refer to the global object. See [jshint](http://jshint.com).
+
+    (function () { "use strict";
+      var module = { exports: {} };
+      /*** your code pasted here ***/ 
+      provide('providename', module);
+    }());
+
 Mark as private if need be by editing `package.json` and adding `"private": true,`
 
 Test and build your module
@@ -56,7 +64,15 @@ CLI / API
 TODO
 ===
 
+linting
+
+jshint code and report errors
+
+Add to API
+
     pakmanager init       # creates / updates package.json
     pakmanager install    # installs package.json.browserDependencies into ./node_modules
     pakmanager clean      # rm -rf ./node_modules
     pakmanager rebuild    # clean, build
+    pakmanager add        # add module@ver to package.json.browserDependencies
+    pakmanager set        # set module@ver in package.json.browserDependencies
