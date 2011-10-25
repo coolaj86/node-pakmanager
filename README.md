@@ -21,7 +21,7 @@ And install pakmanager:
 Usage
 ===
 
-In short: run `pakmanager build` where `package.json` exists
+In short: run `pakmanager build` wherever `package.json` exists
 
 Create your project
 
@@ -33,14 +33,17 @@ Create your project
 
 Mark as private if need be by editing `package.json` and adding `"private": true,`
 
-Otherwise, publish your module
-
-    npm publish ./
-
 Test and build your module
 
     pakmanager deps
     pakmanager build
+    # edit pakmanaged-test.js
+    # open pakmanaged.html to see about any errors
+
+And you might want to publish your module
+
+    npm publish ./
+
 
 CLI / API
 ===
