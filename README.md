@@ -1,7 +1,7 @@
 pakmanager
 ===
 
-An example (and fully functional) package manager built on the `pakman` and `npm` APIs.
+An example (and fully functional) package manager built on the [`pakman`](http://github.com/coolaj86/node-pakman) and `npm` APIs.
 
 Installation
 ===
