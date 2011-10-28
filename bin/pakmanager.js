@@ -13,6 +13,7 @@
           'help': 'help'
         , 'h': 'help'
         , 'build': 'build'
+        , 'init': 'init'
         , 'b': 'add'
         , 'c': 'add'
         , 'deps': 'deps'
