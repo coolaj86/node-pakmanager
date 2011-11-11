@@ -20,8 +20,8 @@
     "node": ">=0.4"
   },
   "dependencies": {
-      "pakman": ">= v0.8.4"
-    , "future": "~ v2"
+    "pakman": ">= v0.8.4",
+    "future": "~ v2"
   },
   "devDependencies": {}
 }
