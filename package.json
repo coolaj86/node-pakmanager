@@ -2,7 +2,7 @@
   "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.info)",
   "name": "pakmanager",
   "description": "A demo package manager using the pakman API.",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "homepage": "https://github.com/coolaj86/node-pakman",
   "repository": {
     "type": "git",
