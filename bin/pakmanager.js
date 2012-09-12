@@ -1,145 +1,77 @@
 #!/usr/bin/env node
+/*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
 
   var fs = require('fs')
-    , pakmanager = require('pakmanager')
-    , args = process.argv.slice(2)
-    , action = args.shift()
-    , possibleAction
+    , args = require('./argparse').parse()
+    , findBrowser = require('../has-browser').findBrowser
+    , findPackage = require('../has-package').findPackage
     , params = []
     , moduleNames = []
-    , actions = {
-          'help': 'help'
-        , 'h': 'help'
-        , 'build': 'build'
-        , 'init': 'init'
-        , 'b': 'add'
-        , 'c': 'add'
-        , 'deps': 'deps'
-        , 'add': 'add'
-        , 'a': 'add'
-        , 'remove': 'remove'
-        , 'rm': 'remove'
-        , 'r': 'remove'
-        , 'info': 'list'
-        , 'list': 'list'
-        , 'ls': 'list'
-        , 'u': 'update'
-        , 'up': 'update'
-        , 'update': 'update'
-        , 'l': 'list'
-        , 'refresh': 'refresh'
-      }
+    , pakmanager
+    , action
+    , cwd
     ;
 
-  function sortArgs() {
-    possibleAction = (action||'').replace(/^-{1,2}/, '');
-    if (!actions[possibleAction]) {
-      if (action) {
-        // we'll assume 'add' later an
-        args.unshift(action);
-        action = undefined;
-      }
-    }
+  function isReady(env) {
+    args.env = env;
+    args.environment = env;
+    console.log('env', env);
 
-    args.forEach(function (arg) {
-      if (/^-{1,2}/.exec(arg)) {
-        params.push(arg.replace(/^-{1,2}/, ''));
-        return;
-      }
+    pakmanager = require('../lib');
 
-      moduleNames.push(arg);
-    });
-  }
-
-  function tryPackageJson() {
-    fs.readFile('./package.json', function (err, data) {
-      var pkgModules
-        , pkgJson
+    function doAction() {
+      var action = args.subcommand_name
         ;
 
-      try {
-        pkgJson = data && JSON.parse(data.toString('utf8')) || {};
-      } catch(e) {
-        console.log('package.json:', e);
-        return;
+      if (pakmanager[action]) {
+        pakmanager[action](args, args, function () {
+          console.log('pakmanager', arguments);
+        });
       }
+    }
 
-      pkgModules = (pkgJson.ender && pkgJson.ender.dependencies) || pkgJson.enderDependencies || pkgJson.dependencies || {};
-
-      if (Array.isArray(pkgModules)) {
-        moduleNames = pkgModules.concat(moduleNames);
-        pkgModules = {};
-      }
-
-      moduleNames = Object.keys(pkgModules).concat(moduleNames);
-
-      moduleNames.forEach(function (name, i) {
-        var semver = /\s*(=|>=|<=|~)\s*v?(\d+)(?:\.(\d+))?(?:\.(\d+))?\s*/.exec(pkgModules[name])
-          ;
-
-        //pkgModules[name] = pkgModules[name] || ">= 0.0.0"
-
-        if (semver && '=' === semver[1]) {
-          moduleNames[i] = name + '@' + semver[2] + '.' + semver[3] + '.' + semver[4];
-        }
-      });
-
-      if (moduleNames.length) {
-        doAction();
-        return;
-      }
-
-      if (err) {
-        console.error('Could not read package.json no modules were specified to add\n');
-      }
-
-      action = 'help';
-      doAction();
-    });
+    return doAction();
+    //tryPackageJson();
   }
 
-  function doAction() {
-    if (!action && params.length) {
-      action = 'help';
+  console.log('parsed args:');
+  console.log(typeof args);
+  console.dir(args);
+  /*
+    {
+        environment: 'guess',
+        change_dir: '/path/to/dir',
+        subcommand_name: 'build',
+        env: null
     }
+  */
 
-    action = (action||'').replace(/^-{1,2}/, '');
+  // TODO try to find root by rwalk
+  cwd = args.change_dir || process.cwd();
+  args.packageRoot = cwd;
+  console.log(cwd);
 
-    if (moduleNames.length) {
-      action = action || 'add';
-    }
+  if (-1 !== ['browser', 'node'].indexOf(args.environment)) {
+    isReady(args.environment);
+    return;
+  }
 
-    action = actions[action] || 'help';
-
-    if ('help' === action) {
-      console.log('Usage: mend < add | list | update | remove > moduleName0 [, moduleName1, ...]');
-      console.log('Example: mend add jeesh ahr2 futures');
-      console.log('');
+  findBrowser(function (type) {
+    console.log('browser', type);
+    if ('guess' !== type) {
+      isReady(type);
       return;
     }
 
-    // takeAction
-    pakmanager[action] && pakmanager[action](params, moduleNames, function () {
-      console.log('pakmanager', arguments);
+    findPackage(function (type1) {
+      console.log('package', type1);
+      if ('guess' !== type1) {
+        isReady(type1);
+      } else {
+        isReady('browser');
+      }
     });
-  }
-
-  // this is where we should get serious
-  function takeAction(action, params, moduleNames) {
-    console.log('takeAction', action, params, moduleNames);
-  }
-
-  /*
-  mend --build jeesh jQuery ahr2 -stupid reqwest futures  -g --build
-  --> add [ 'stupid', 'g', 'build' ] [ 'jeesh', 'jQuery', 'ahr2', 'reqwest', 'futures' ]
-  mend
-  mend --foo -bar
-  --> [help message is displayed]
-  */
-
-  sortArgs();
-  return doAction();
-  tryPackageJson();
+  }, cwd);
 }());
