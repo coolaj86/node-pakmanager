@@ -33,7 +33,7 @@
       }
 
       //try {
-        cb(require(path.join(dir, 'package.json')).browserDependencies ? 'browser' : 'node');
+        cb(require(path.join(dir, 'package.json')).browserDependencies ? 'browser' : 'guess');
       //} catch(e) {
        // next();
       //}

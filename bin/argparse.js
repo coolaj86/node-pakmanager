@@ -30,7 +30,7 @@
       }
   ));
 
-  // pakmanager add
+  // pakmanager deps
   require('./argparsers/deps').create(subparsers.addParser('deps',
       {
           aliases: ['d']
@@ -38,6 +38,7 @@
       }
   ));
 
+  // pakmanager add
   /*
   parser.addArgument(
       ['anonymous']
@@ -48,7 +49,7 @@
         , help: "some parameters"
       }
   );
-  */
+  //*/
 
  exports.parse = function () {
     return parser.parseArgs();

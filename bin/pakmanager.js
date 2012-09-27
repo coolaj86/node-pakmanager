@@ -15,9 +15,9 @@
     ;
 
   function isReady(env) {
+    console.log('Targeted Environment:', env);
     args.env = env;
     args.environment = env;
-    console.log('env', env);
 
     pakmanager = require('../lib');
 
@@ -25,6 +25,7 @@
       var action = args.subcommand_name
         ;
 
+      console.log('[[[' + action + ']]]');
       if (pakmanager[action]) {
         pakmanager[action](args, args, function () {
           console.log('pakmanager', arguments);
@@ -36,9 +37,11 @@
     //tryPackageJson();
   }
 
+  /*
   console.log('parsed args:');
   console.log(typeof args);
   console.dir(args);
+  */
   /*
     {
         environment: 'guess',
@@ -59,17 +62,24 @@
   }
 
   findBrowser(function (type) {
-    console.log('browser', type);
     if ('guess' !== type) {
       isReady(type);
       return;
     }
 
+  //"browserDependencies": {},
+    // TODO don't default so heavily to browser
     findPackage(function (type1) {
-      console.log('package', type1);
       if ('guess' !== type1) {
         isReady(type1);
       } else {
+        console.warn('\n\n======================= WARNING =======================');
+        console.warn('Assuming browser mode by default is deprecated.');
+        console.warn('  Include browserDependencies in your package.json');
+        console.warn('  -- OR --');
+        console.warn('  pakmanager -e browser build');
+        console.warn('\nIn the next release of pakmanager, the node environment will be assumed as default');
+        console.warn('=======================================================\n\n');
         isReady('browser');
       }
     });

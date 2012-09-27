@@ -11,5 +11,15 @@
           , help: 'Explicitly build for browser or NodeJS'
         }
     );
+    parser.addArgument(
+        ['anonymous']
+      , {
+            metavar: "N"
+          , type: 'string'
+          , nargs: '*'
+          , help: "some parameters"
+        }
+    );
+    
   };
 }());
