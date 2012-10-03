@@ -27,9 +27,13 @@
 
       console.log('[[[' + action + ']]]');
       if (pakmanager[action]) {
-        pakmanager[action](args, args, function () {
-          console.log('pakmanager', arguments);
-        });
+        pakmanager[action](function () {
+          if ('build' === action) {
+            console.log('wrote pakmanaged.js');
+          } else {
+            console.log('pakmanager', arguments);
+          }
+        }, args);
       }
     }
 
