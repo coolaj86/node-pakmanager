@@ -2,7 +2,7 @@
   "author": "AJ ONeal <coolaj86@gmail.com> (http://coolaj86.info)",
   "name": "pakmanager",
   "description": "A demo package manager using the pakman API.",
-  "version": "0.11.6",
+  "version": "0.11.7",
   "homepage": "https://github.com/coolaj86/node-pakman",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
     "node": ">=0.4"
   },
   "dependencies": {
-    "pakman": ">=0.11.3 <0.12.0",
+    "pakman": ">=0.11.4 <0.12.0",
     "argparse": ">=0.1.5 <0.2.0"
   },
   "devDependencies": {}
