@@ -1,16 +1,11 @@
 #!/usr/bin/env node
-/*jshint strict:true node:true es5:true onevar:true laxcomma:true laxbreak:true eqeqeq:true immed:true latedef:true*/
 (function () {
   "use strict";
 
-  var fs = require('fs')
-    , args = require('./argparse').parse()
+  var args = require('./argparse').parse()
     , findBrowser = require('../has-browser').findBrowser
     , findPackage = require('../has-package').findPackage
-    , params = []
-    , moduleNames = []
     , pakmanager
-    , action
     , cwd
     ;
 
@@ -19,7 +14,7 @@
     args.env = env;
     args.environment = env;
 
-    pakmanager = require('../lib');
+    pakmanager = require('../lib').create();
 
     function doAction() {
       var action = args.subcommand_name
@@ -86,6 +81,6 @@
         console.warn('=======================================================\n\n');
         isReady('browser');
       }
-    });
+    }, cwd);
   }, cwd);
 }());

@@ -61,6 +61,12 @@ CLI / API
 
     rm -rf pakmanaged.js ./node_modules # clean old builds
 
+Internal API
+===
+
+    #init(cb, config)
+      #config.packageRoot
+
 TODO
 ===
 
