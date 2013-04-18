@@ -14,7 +14,7 @@
     args.env = env;
     args.environment = env;
 
-    pakmanager = require('../lib').create();
+    pakmanager = require('../lib').create({ packageRoot: cwd });
 
     function doAction() {
       var action = args.subcommand_name

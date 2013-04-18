@@ -64,8 +64,10 @@ CLI / API
 Internal API
 ===
 
+    #create(config)
     #init(cb, config)
-      #config.packageRoot
+
+    config.packageRoot
 
 TODO
 ===
